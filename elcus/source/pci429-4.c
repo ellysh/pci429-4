@@ -32,11 +32,12 @@ make  -C /usr/src/linux-2.6.3 SUBDIRS=$PWD modules
 # define __SMP__
 #endif
 
-#include <linux/version.h> 
-#include <linux/module.h>   /* Specifically, a module */ 
-#include <linux/kernel.h>   /* We're doing kernel work */ 
-#if ( LINUX_VERSION_CODE < KERNEL_VERSION(2,6,19) ) 
-#include <linux/config.h>   // for PCI, SMP configuration 
+#include <linux/version.h>
+#include <linux/module.h>   /* Specifically, a module */
+#include <linux/kernel.h>   /* We're doing kernel work */
+#include <linux/signal.h>
+#if ( LINUX_VERSION_CODE < KERNEL_VERSION(2,6,19) )
+#include <linux/config.h>   // for PCI, SMP configuration
 #endif 
 #include <linux/mm.h> 
 #include <linux/delay.h> 
@@ -1623,7 +1624,7 @@ static int __init  pci429_4_initialization(void)
 
           
           
-    dev = pci_find_device(0x10b5,0x9030, dev);
+    dev = pci_get_device(0x10b5,0x9030, dev);
    
 
  while (dev)
@@ -1716,7 +1717,7 @@ static int __init  pci429_4_initialization(void)
 
 			}
 		}
- 	    dev = pci_find_device(0x10b5,0x9030, dev);
+ 	    dev = pci_get_device(0x10b5,0x9030, dev);
  
 	}
 	for (i=0; i<DEVICE_NUMBER; i++)
