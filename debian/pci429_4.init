@@ -1,0 +1,152 @@
+#!/bin/sh 
+#
+# Example init.d script with LSB support.
+#
+# Please read this init.d carefully and modify the sections to
+# adjust it to the program you want to run.
+#
+# Copyright (c) 2007 Javier Fernandez-Sanguino <jfs@debian.org>
+#
+# This is free software; you may redistribute it and/or modify
+# it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2,
+# or (at your option) any later version.
+#
+# This is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License with
+# the Debian operating system, in /usr/share/common-licenses/GPL;  if
+# not, write to the Free Software Foundation, Inc., 59 Temple Place,
+# Suite 330, Boston, MA 02111-1307 USA
+#
+### BEGIN INIT INFO
+# Provides:          pci429_4
+# Required-Start:    $network $local_fs
+# Required-Stop:     
+# Should-Start:      $named
+# Should-Stop:       
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: <Enter a short description of the sortware>
+# Description:       <Enter a long description of the software>
+#                    <...>
+#                    <...>
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+NAME=pci429_4                # Introduce the short server's name here
+DESC="Elcus PCI429-4 driver"          # Introduce a short description here
+PIDFILE=/var/run/$NAME.pid 
+device="pci429_4"
+
+. /lib/lsb/init-functions
+
+
+# Include defaults if available
+if [ -f /etc/default/$NAME ] ; then
+	. /etc/default/$NAME
+fi
+
+# Use this if you want the user to explicitly set 'RUN' in 
+# /etc/default/
+if [ "x$RUN" != "xyes" ] ; then
+    log_failure_msg "$NAME disabled, please adjust the configuration to your needs "
+    log_failure_msg "and then set RUN to 'yes' in /etc/default/$NAME to enable it."
+    exit 1
+fi
+
+
+set -e
+
+running() {
+    /sbin/lsmod | grep pci429-4
+    errcode=$?
+    return $errcode
+}
+
+start_server() {
+
+	/sbin/modprobe pci429-4
+        errcode=$?
+	return $errcode
+}
+
+stop_server() {
+	
+	/sbin/rmmod pci429-4
+        errcode=$?
+	return $errcode
+}
+
+reload_server() {
+    return $?
+}
+
+
+case "$1" in
+  start)
+	log_daemon_msg "Starting $DESC" "$NAME"
+        # Check if it's running first
+#        if running ;  then
+#            log_warning_msg "already running"
+#            log_end_msg 0
+#            exit 0
+#        fi
+#        if start_server && running ;  then
+            start_server
+            # It's ok, the server started and is running
+	    major=`awk "\\$2==\"$device\" {print \\$1}" /proc/devices`
+	    mode="666"
+	    mknod /dev/${device}0 c $major 0
+	    chmod $mode /dev/${device}[0-7]
+            log_end_msg 0
+#        else
+            # Either we could not start it or it is not running
+            # after we did
+            # NOTE: Some servers might die some time after they start,
+            # this code does not try to detect this and might give
+            # a false positive (use 'status' for that)
+#            log_end_msg 1
+#        fi
+	;;
+  stop)
+        log_daemon_msg "Stopping $DESC" "$NAME"
+#        if running ; then
+            # Only stop the server if we see it running
+#            if stop_server; then
+                stop_server
+		rm -f /dev/${device}[0-7]
+        	log_end_msg 0
+#            else
+#        	log_end_msg 1
+#            fi
+#        else
+            # If it's not running don't do anything
+#            log_warning_msg "not running"
+#            log_end_msg 0
+#            exit 0
+#        fi
+        ;;
+  status)
+
+        log_daemon_msg "Checking status of $DESC" "$NAME"
+        if running ;  then
+            log_end_msg 0
+        else
+            log_end_msg 1
+            exit 1
+        fi
+        ;;
+
+  *)
+	N=/etc/init.d/$NAME
+	echo "Usage: $N {start|stop|force-stop|restart|reload|force-reload|status}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

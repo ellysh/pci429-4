@@ -1,0 +1,10 @@
+prefix=/usr
+exec_prefix=${prefix}
+includedir=${prefix}/include/pci429-4
+modules=1
+
+Name: pci429-4
+Version: 0.2
+Description: Software development kit for Elcus PCI429-4 devices
+Requires:
+Cflags: -I${includedir}

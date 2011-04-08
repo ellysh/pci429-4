@@ -1,0 +1,10 @@
+# Defaults for pci429_4 initscript
+# sourced by /etc/init.d/pci429_4
+# installed at /etc/default/pci429_4 by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+# Set to "yes" to enable simunit service
+RUN=yes
