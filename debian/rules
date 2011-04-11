@@ -65,7 +65,6 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
-	$(MAKE) configure
 
 	touch configure-stamp
 
@@ -155,7 +154,7 @@ install: build
 
 	# Add here commands to install the package into debian/simunit-drivers-adlink.
 	$(MAKE) DESTDIR=$(CURDIR)/debian/pci429-4-modules install
-	$(MAKE) DESTDIR=$(CURDIR)/debian/pci429-4-dev install_dev
+	$(MAKE) DESTDIR=$(CURDIR)/debian/pci429-4-dev install-dev
 
 	dh_install
 
