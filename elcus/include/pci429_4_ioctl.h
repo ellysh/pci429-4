@@ -153,7 +153,7 @@
 			ioctl(hDevice,LNXioctl_PCI429_4_writeKOP_0,&Data )
 
 
-//безусловный спуск задания режима входному каналу
+//п╠п╣п╥я┐я│п╩п╬п╡п╫я▀п╧ я│п©я┐я│п╨ п╥п╟п╢п╟п╫п╦я▐ я─п╣п╤п╦п╪п╟ п╡я┘п╬п╢п╫п╬п╪я┐ п╨п╟п╫п╟п╩я┐
 
 #define KP_PFA_BKP(hDevice,Data ,nc,ch,m_ch,ap,m_ap)	Data[0] =((nc-1)&0xF)+0x10;	\
 			Data[1] = ((m_ch&1)<<15)|(ch&0x3ff);\
@@ -193,7 +193,7 @@
 
 
 
-//безусловный спуск задания выходному каналу
+//п╠п╣п╥я┐я│п╩п╬п╡п╫я▀п╧ я│п©я┐я│п╨ п╥п╟п╢п╟п╫п╦я▐ п╡я▀я┘п╬п╢п╫п╬п╪я┐ п╨п╟п╫п╟п╩я┐
 #define KV_VR_BKV(hDevice,Data ,nc,ch,m)	Data[0] =((nc-1)&0xF)+0x20;	\
 			Data[1] = ((m&1)<<15)|(ch&0x3ff);\
 			ioctl(hDevice,LNXioctl_PCI429_4_writeKOP_1,&Data )
@@ -216,7 +216,7 @@
 			Data[1] = ((m&1)<<15)|(0x2000);\
 			ioctl(hDevice,LNXioctl_PCI429_4_writeKOP_1,&Data )
 
-//обнулить массив числа слов
+//п╬п╠п╫я┐п╩п╦я┌я▄ п╪п╟я│я│п╦п╡ я┤п╦я│п╩п╟ я│п╩п╬п╡
 #define KOM(hDevice,Data ,am,ch)	Data[0] =0x30;	\
 			Data[1] = (unsigned short)am;\
 			Data[2] = (unsigned short)ch;\
@@ -226,7 +226,7 @@
 			Data[2] = (unsigned short)ch;\
 			ioctl(hDevice,LNXioctl_PCI429_4_writeKOP_2,&Data )
 
-// передать массив параметров
+// п©п╣я─п╣п╢п╟я┌я▄ п╪п╟я│я│п╦п╡ п©п╟я─п╟п╪п╣я┌я─п╬п╡
 #define KPM0(hDevice,Data )	Data[0] = 0x38;	\
 			ioctl(hDevice,LNXioctl_PCI429_4_writeKOP_0,&Data )
 
@@ -315,16 +315,16 @@
 			Data[1] = ((m&1)<<15)|(0x2000);\
 			ioctl(hDevice,LNXioctl_PCI429_4_writeBU_O,&Data )
 
-//Подготовка расписания канала, работающего в глобальном режиме.
+//п÷п╬п╢пЁп╬я┌п╬п╡п╨п╟ я─п╟я│п©п╦я│п╟п╫п╦я▐ п╨п╟п╫п╟п╩п╟, я─п╟п╠п╬я┌п╟я▌я┴п╣пЁп╬ п╡ пЁп╩п╬п╠п╟п╩я▄п╫п╬п╪ я─п╣п╤п╦п╪п╣.
 
-//Выходные каналы.
+//п▓я▀я┘п╬п╢п╫я▀п╣ п╨п╟п╫п╟п╩я▀.
 
 #define TAB_VG_WORD(Data,ss,adr,km,nl)	Data[ss+2] =((km&0x1)<<14)+((nl&0x1)<<13)+(adr&0x1fff)
 
 
 #define TAB_VG_PAUSE(Data, ss, ch_p)	Data[ss+2] =(ch_p&0x1FF)+0x8000
 
-//Входные каналы.
+//п▓я┘п╬п╢п╫я▀п╣ п╨п╟п╫п╟п╩я▀.
 
 #define TAB_PG_WORD(Data,ap,adr,m)	Data[ap+2] =((m&0x1)<<15)+0x2000+(adr&0x1fff)
 
