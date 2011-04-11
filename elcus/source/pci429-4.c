@@ -28,10 +28,6 @@ make  -C /usr/src/linux-2.6.3 SUBDIRS=$PWD modules
 //#define myDRV
 
 //#include <linux/config.h>
-#ifdef CONFIG_SMP
-# define __SMP__
-#endif
-
 #include <linux/version.h>
 #include <linux/module.h>   /* Specifically, a module */
 #include <linux/kernel.h>   /* We're doing kernel work */
