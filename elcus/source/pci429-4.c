@@ -1574,7 +1574,11 @@ static int pci429_release(struct inode *inode, struct file *filp)
 
 static const struct file_operations pci429_4_fops = {
  .owner   =     THIS_MODULE,
+#if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,35)
+ .unlocked_ioctl   =     pci429_ioctl,
+#else
  .ioctl   =   	pci429_ioctl,
+#endif
  .open    = 	pci429_open,
  .release = 	pci429_release
 };
