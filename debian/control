@@ -23,13 +23,3 @@ Description: Drivers for Elcus PCI429-4-xx ARINC429 Cards
  acquisition driver and user library for developing custom applications under and Linux environment.
  .
  This package contains source files for D2K-DASK drivers (kernel modules), user library (libpci_dask2k) and examples.
-
-Package: pci429-4-modules
-Architecture: any
-Provides: pci429-4-modules
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Drivers for Elcus PCI429-4-xx ARINC429 Cards
- D2K-DASK is a software development kit for DAQ-2000 data acquisition cards. It contains a high performance data
- acquisition driver and user library for developing custom applications under and Linux environment.
- .
- This package contains D2K-DASK drivers (kernel modules).

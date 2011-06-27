@@ -23,9 +23,6 @@ export DH_VERBOSE=1
 # Name of the source package
 psource:=pci429-4-source
 
-# The short upstream name, used for the module source directory
-sname:=pci429-4-modules
-
 ### KERNEL SETUP
 ### Setup the stuff needed for making kernel module packages
 ### taken from /usr/share/kernel-package/sample.module.rules
@@ -139,21 +136,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	# Create the directories to install the source into
-	dh_installdirs -p$(psource)  usr/src/modules/$(sname)/debian
-
-	# Copy only the driver source to the proper location
-	# cp -s driver/*  debian/$(psource)/usr/src/modules/$(sname)
-	cp -Rl `ls . | grep -v debian` debian/$(psource)/usr/src/modules/$(sname)
-	# Copy the needed debian/ pieces to the proper location
-	cp debian/*modules.in* \
-		debian/$(psource)/usr/src/modules/$(sname)/debian
-	cp debian/rules debian/changelog debian/copyright debian/control \
-		debian/compat debian/$(psource)/usr/src/modules/$(sname)/debian/
-	cd debian/$(psource)/usr/src && tar c modules | bzip2 -9 > $(sname).tar.bz2 && rm -rf modules
-
 	# Add here commands to install the package into debian/simunit-drivers-adlink.
-	$(MAKE) DESTDIR=$(CURDIR)/debian/pci429-4-modules install
 	$(MAKE) DESTDIR=$(CURDIR)/debian/pci429-4-dev install-dev
 
 	dh_install
